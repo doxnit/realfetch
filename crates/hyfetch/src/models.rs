@@ -17,7 +17,6 @@ pub struct Config {
     #[serde(with = "self::args_serde")]
     pub args: Option<Vec<String>>,
     pub distro: Option<String>,
-    pub pride_month_disable: bool,
     pub custom_ascii_path: Option<String>,
 }
 

@@ -3,26 +3,26 @@
 .SH NAME
 Version: \- manual page for Version: 2.0.5
 .SH SYNOPSIS
-.B hyfetch
+.B realfetch
 [\fI\,-c\/\fR] [\fI\,-C=CONFIG_FILE\/\fR] [\fI\,-p=PRESET\/\fR] [\fI\,-m=MODE\/\fR] [\fI\,-b=BACKEND\/\fR] [\fI\,--args=ARGS\/\fR] [\fI\,--c-scale=\/\fR
 .SH DESCRIPTION
-SCALE] [\-\-c\-set\-l=LIGHTNESS] [\-\-june] [\-\-debug] ([\-\-distro=DISTRO] | [\-\-test\-distro=DISTRO]) [
+SCALE] [\-\-c\-set\-l=LIGHTNESS] [\-\-debug] ([\-\-distro=DISTRO] | [\-\-test\-distro=DISTRO]) [
 \fB\-\-ascii\-file\fR=\fI\,ASCII_FILE]\/\fR [\-\-print\-font\-logo] [\-\-auto\-detect\-light\-dark=BOOL]
 .PP
-[1m[38;5;14mhyfetch[39m[22m \- neofetch with flags <3
+[1m[38;5;14mrealfetch[39m[22m \- hyfetch without imaginary stuff
 .SS "Available options:"
 .TP
 \fB\-c\fR, \fB\-\-config\fR
-Configure hyfetch
+Configure realfetch
 .TP
 \fB\-C\fR, \fB\-\-config\-file\fR=\fI\,CONFIG_FILE\/\fR
 Use another config file
-[default: "/home/azalea/.config/hyfetch.json"]
+[default: "/home/azalea/.config/realfetch.json"]
 .TP
 \fB\-p\fR, \fB\-\-preset\fR=\fI\,PRESET\/\fR
 Use preset or comma\-separated color list or comma\-separated hex colors
 (e.g., "#ff0000,#00ff00,#0000ff")
-PRESET={rainbow,transgender,nonbinary,xenogender,agender,queer,genderfluid,bisexual,pansexual,polysexual,omnisexual,omniromantic,gay\-men,lesbian,abrosexual,asexual,aromantic,fictosexual,aroace1,aroace2,aroace3,autosexual,intergender,greygender,akiosexual,bigender,demigender,demiboy,demigirl,transmasculine,transfeminine,genderfaun,demifaun,genderfae,demifae,neutrois,biromantic1,biromantic2,autoromantic,boyflux2,girlflux,genderflux,nullflux,hypergender,hyperboy,hypergirl,hyperandrogyne,hyperneutrois,finsexual,unlabeled1,unlabeled2,pangender,pangender.contrast,gendernonconforming1,gendernonconforming2,femboy,tomboy,gynesexual,androsexual,gendervoid,voidgirl,voidboy,nonhuman\-unity,plural,fraysexual,bear,butch,femme,leather,otter,twink,adipophilia,kenochoric,veldian,solian,lunian,polyam,sapphic,androgyne,interprogress,progress,intersex,old\-polyam,equal\-rights,drag,pronounfluid,pronounflux,exipronoun,neopronoun,neofluid,genderqueer,cisgender,baker,caninekin,libragender,librafeminine,libramasculine,libraandrogyne,libranonbinary,fluidflux1,fluidflux2,transbian,autism,cenelian,transneutral,beiyang,burger,throatlozenges,band,random}
+PRESET={real,russia}
 .TP
 \fB\-m\fR, \fB\-\-mode\fR=\fI\,MODE\/\fR
 Color mode MODE={8bit,rgb}
@@ -38,9 +38,6 @@ Lighten colors by a multiplier
 .TP
 \fB\-\-c\-set\-l\fR=\fI\,LIGHTNESS\/\fR
 Set lightness value of the colors
-.TP
-\fB\-\-june\fR
-Show pride month easter egg
 .TP
 \fB\-\-debug\fR
 Debug mode
@@ -58,7 +55,7 @@ Use a specific file for the ascii art
 Print the Font Logo / Nerd Font icon of your distro and exit
 .TP
 \fB\-\-auto\-detect\-light\-dark\fR=\fI\,BOOL\/\fR
-Enables hyfetch to detect light/dark terminal background in
+Enables realfetch to detect light/dark terminal background in
 runtime
 .TP
 \fB\-h\fR, \fB\-\-help\fR

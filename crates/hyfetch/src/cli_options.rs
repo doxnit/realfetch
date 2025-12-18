@@ -24,7 +24,6 @@ pub struct Options {
     pub args: Option<Vec<String>>,
     pub scale: Option<f32>,
     pub lightness: Option<Lightness>,
-    pub june: bool,
     pub debug: bool,
     pub distro: Option<String>,
     pub ascii_file: Option<PathBuf>,
@@ -119,7 +118,6 @@ BACKEND={{{backends}}}",
         .help("Set lightness value of the colors")
         .argument("LIGHTNESS")
         .optional();
-    let june = long("june").help("Show pride month easter egg").switch();
     let debug = long("debug").help("Debug mode").switch();
     let distro = long("distro")
         .help("Test for a specific distro")
@@ -162,7 +160,6 @@ BACKEND={{{backends}}}",
         args,
         scale,
         lightness,
-        june,
         debug,
         distro,
         ascii_file,

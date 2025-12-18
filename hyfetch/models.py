@@ -18,8 +18,6 @@ class Config:
     backend: BackendLiteral = "neofetch"
     args: str | None = None
     distro: str | None = None
-    pride_month_shown: list[int] = field(default_factory=list)  # This is deprecated, see issue #136
-    pride_month_disable: bool = False
     custom_ascii_path: str | None = None
 
     @classmethod

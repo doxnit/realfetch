@@ -3,9 +3,9 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "HyFetch"
+name = "RealFetch"
 dynamic = ["version"]
-description = "neofetch with flags <3"
+description = "HyFetch without imaginary stuff!"
 readme = "README.md"
 authors = [
     { name = "Azalea Gui", email = "me@hydev.org" },
@@ -33,7 +33,7 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/hykilpikonna/HyFetch"
+Homepage = "https://github.com/doxnit/realfetch"
 
 [project.scripts]
 "hyfetch.v1" = "hyfetch.__main__:run_py"

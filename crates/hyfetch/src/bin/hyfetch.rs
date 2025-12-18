@@ -27,9 +27,9 @@ use hyfetch::neofetch_util::macchina_path;
 use hyfetch::neofetch_util::{self, add_pkg_path, fastfetch_path, get_distro_ascii, get_distro_name, literal_input, ColorAlignment, NEOFETCH_COLORS_AC, NEOFETCH_COLOR_PATTERNS, TEST_ASCII};
 use hyfetch::color_profile::{AssignLightness, ColorProfile};
 use hyfetch::presets::{Preset};
-use hyfetch::{pride_month, printc};
+use hyfetch::{printc};
 use hyfetch::types::{AnsiMode, Backend, TerminalTheme};
-use hyfetch::utils::{get_cache_path, input};
+use hyfetch::utils::{input};
 use hyfetch::font_logo::get_font_logo;
 use indexmap::{IndexMap, IndexSet};
 use itertools::Itertools as _;
@@ -39,12 +39,11 @@ use serde_json::ser::PrettyFormatter;
 use strum::{EnumCount as _, VariantArray, VariantNames};
 use terminal_colorsaurus::{background_color, QueryOptions};
 use terminal_size::{terminal_size, Height, Width};
-use time::{Month, OffsetDateTime};
 use tracing::debug;
 
 fn main() -> Result<()> {
     add_pkg_path().expect("failed to add pkg path");
-    
+
     #[cfg(windows)]
     if let Err(err) = enable_ansi_support::enable_ansi_support() {
         debug!(%err, "could not enable ANSI escape code support");
@@ -98,24 +97,6 @@ fn main() -> Result<()> {
     } else {
         config.light_dark.unwrap_or_default()
     };
-
-    // Check if it's June (pride month)
-    let now =
-        OffsetDateTime::now_local().context("failed to get current datetime in local timezone")?;
-    let cache_path = get_cache_path().context("failed to get cache path")?;
-    let june_path = cache_path.join(format!("animation-displayed-{year}", year = now.year()));
-    let show_pride_month = options.june
-        || now.month() == Month::June && !june_path.is_file() && io::stdout().is_terminal();
-
-    if show_pride_month && !config.pride_month_disable {
-        pride_month::start_animation(color_mode).context("failed to draw pride month animation")?;
-        println!("\nHappy pride month!\n(You can always view the animation again with `hyfetch --june`)\n");
-
-        if !june_path.is_file() && !options.june {
-            File::create(&june_path)
-                .with_context(|| format!("failed to create file {june_path:?}"))?;
-        }
-    }
 
     // Use a custom distro
     let distro = options.distro.as_ref().or(config.distro.as_ref());
@@ -330,7 +311,7 @@ fn create_config(
     //////////////////////////////
     // 1. Select color mode
 
-    let default_color_profile = Preset::Rainbow.color_profile();
+    let default_color_profile = Preset::Real.color_profile();
 
     let select_color_mode = || -> Result<(AnsiMode, &str)> {
         if det_ansi == Some(AnsiMode::Rgb) {
@@ -547,7 +528,7 @@ fn create_config(
         let selection = literal_input(
             format!("Which {preset_default_colored} do you want to use? "),
             &opts[..],
-            Preset::Rainbow.as_ref(),
+            Preset::Real.as_ref(),
             false,
             color_mode,
         )
@@ -736,26 +717,26 @@ fn create_config(
     } else {
         detected_dst.unwrap()
     };
-    
+
     let running_dst_sml = if Distro::detect(&detected_dst_small_fmt).is_some() {
         detected_dst_small_fmt
     } else {
         "".to_string()
     };
 
-    
+
     // load ascii
     let small_asc = get_distro_ascii(Some(&running_dst_sml), backend).context("failed to get distro ascii")?;
     let small_asc = small_asc.to_normalized().context("failed to normalize ascii")?;
-    
+
     let mut asc = asc;
-    let mut logo_chosen: Option<String> = distro.cloned(); 
-    
-    if small_asc.lines != asc.lines && running_dst_sml != "" { 
+    let mut logo_chosen: Option<String> = distro.cloned();
+
+    if small_asc.lines != asc.lines && running_dst_sml != "" {
         let ds_arrangements = [
             ("Default", asc.clone()),
             ("Small", small_asc.clone())
-        ];   
+        ];
 
         let arrangements: IndexMap<Cow<str>, NormalizedAsciiArt> =
             ds_arrangements.map(|(k, a)| (k.into(), a)).into();
@@ -792,15 +773,15 @@ fn create_config(
 
             // prints small logo w/ big logo
             for row in &asciis.into_iter().chunks(usize::from(ascii_per_row)) {
-                
+
                 let row: Vec<Vec<String>> = row.collect();
-                
+
                 for i in 0..usize::from(asc.h).checked_add(1).unwrap() {
                     let mut line = Vec::new();
                     for lines in &row {
                             line.push(&*lines[i]);
                     }
-                    printc(line.join("                 "), color_mode).context("failed to print ascii line")?; 
+                    printc(line.join("                 "), color_mode).context("failed to print ascii line")?;
                 }
 
                 println!();
@@ -811,7 +792,7 @@ fn create_config(
             let choice = literal_input("Your choice?", &opts[..], "default", true, color_mode)
                 .context("failed to ask for choice input")
                 .context("failed to select logo type").context("failed to ask for choice input")?;
-            
+
             if choice.to_lowercase() == "small" {
                 logo_chosen = Some(running_dst_sml);
                 asc = small_asc;
@@ -940,7 +921,7 @@ fn create_config(
         // Save choice
         color_align = if choice == "horizontal" { ColorAlignment::Horizontal }
         else if choice == "vertical" { ColorAlignment::Vertical }
-        else { 
+        else {
             arrangements.into_iter()
                 .find_map(|(k, ca)| {
                     if k.to_lowercase() == choice {
@@ -1066,7 +1047,6 @@ fn create_config(
         backend,
         args: None,
         distro: logo_chosen,
-        pride_month_disable: false,
         custom_ascii_path,
     };
     debug!(?config, "created config");

@@ -11,7 +11,7 @@ import traceback
 from itertools import permutations, islice
 from math import ceil
 
-from . import termenv, neofetch_util, pride_month
+from . import termenv, neofetch_util
 from .color_scale import Scale
 from .color_util import clear_screen
 from .constants import *
@@ -387,7 +387,6 @@ def create_parser() -> argparse.ArgumentParser:
     parser.add_argument('--c-set-l', dest='light', help=f'Set lightness value of the colors', type=float)
     parser.add_argument('--c-overlay', action='store_true', dest='overlay', help=f'Use experimental overlay color adjusting instead of HSL lightness')
     parser.add_argument('-V', '--version', dest='version', action='store_true', help=f'Check version')
-    parser.add_argument('--june', action='store_true', help=f'Show pride month easter egg')
     parser.add_argument('--debug', action='store_true', help=f'Debug mode')
 
     parser.add_argument('--distro', '--test-distro', dest='distro', help=f'Test for a specific distro')
@@ -451,24 +450,6 @@ def run():
 
     # Load config or create config
     config = create_config() if args.config else check_config(args.config_file)
-
-    # Check if it's June (pride month)
-    now = datetime.datetime.now()
-    june_path = CACHE_PATH / f'animation-displayed-{now.year}'
-    show_for_june = False
-    if now.month == 6 and now.year not in config.pride_month_shown and not june_path.is_file() and os.isatty(sys.stdout.fileno()):
-        show_for_june = True
-
-    if (args.june or show_for_june) and not config.pride_month_disable:
-        pride_month.start_animation()
-        print()
-        print("Happy pride month!")
-        print("(You can always view the animation again with `hyfetch --june`)")
-        print()
-
-        if not june_path.is_file() and not args.june: # If --june wasn't explicitly specified...
-            june_path.parent.mkdir(parents=True, exist_ok=True)
-            june_path.touch()
 
     # Use a custom distro
     GLOBAL_CFG.override_distro = args.distro or config.distro
